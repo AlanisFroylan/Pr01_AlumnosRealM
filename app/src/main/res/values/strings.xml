@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Pr01_AlumnosRealM</string>
+    <string name="titulo">Control de Alumnos</string>
+    <string name="nom">Nombre(s)</string>
+    <string name="ape">Apellidos</string>
+    <string name="control">No. Control</string>
+    <string name="carrera">Carrera</string>
+    <string name="Email">E-mail</string>
+    <string name="btnGuardar">Guardar</string>
+    <string name="btnMostrar">Mostrar</string>
+    <string name="btnEliminar">Eliminar</string>
+
+    <string name="Ingresar">Ingresar %1s</string>
+</resources>
