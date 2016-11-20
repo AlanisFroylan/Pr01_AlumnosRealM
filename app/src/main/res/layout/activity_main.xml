@@ -63,34 +63,37 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="60dp">
 
-        <Button
-            android:id="@+id/btnsave"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".2"
-            android:hint="@string/btnGuardar"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+      <ImageButton
+          android:id="@+id/btn_guardar"
+          android:layout_width="0dp"
+          android:layout_weight="0.25"
+          android:layout_height="match_parent"
+          android:background="@drawable/save" />
 
-        <Button
-            android:id="@+id/btnview"
+        <ImageButton
+            android:id="@+id/btnUpdate"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".2"
-            android:hint="@string/btnMostrar"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:background="@drawable/update" />
 
-        <Button
-            android:id="@+id/btndelete"
+
+        <ImageButton
+            android:id="@+id/btnMostrar"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".2"
-            android:hint="@string/btnEliminar"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:background="@drawable/acount" />
+        <ImageButton
+            android:id="@+id/btnEliminar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:background="@drawable/delete" />
+
+
     </LinearLayout>
 
     <ListView

@@ -5,10 +5,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
-    Button btnGuardar, btnMostrar, btnBorrar;
+    ImageButton btnGuardar, btnMostrar, btnBorrar,btn_update;
     EditText txNom, txApe, txCar, txCon, txMail;
     ListView list;
 
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     Realm realm;
     RealmResults<Alumnos>result;
-    RealmResults<Alumnos>resultaQuery;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +41,11 @@ public class MainActivity extends AppCompatActivity {
         txCon=(EditText)findViewById(R.id.control);
         txMail=(EditText)findViewById(R.id.email);
 
-        btnGuardar=(Button)findViewById(R.id.btnsave);
-        btnMostrar=(Button)findViewById(R.id.btnview);
-        btnBorrar=(Button)findViewById(R.id.btndelete);
+        btnGuardar=(ImageButton) findViewById(R.id.btn_guardar);
+        btnMostrar=(ImageButton) findViewById(R.id.btnMostrar);
+        btnBorrar=(ImageButton) findViewById(R.id.btnEliminar);
+        btn_update=(ImageButton)findViewById(R.id.btnUpdate);
+
 
         list=(ListView)findViewById(R.id.listview);
 
@@ -81,6 +84,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        btn_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActualizarAlumno();
+            }
+        });
+
 
     }
 
@@ -88,9 +98,9 @@ public class MainActivity extends AppCompatActivity {
         listaAlumno.clear();
         for(int i=0;i<result.size();i++){
             listaAlumno.add(new AlumnosModels(
+                    result.get(i).getControl(),
                     result.get(i).getNombre(),
                     result.get(i).getApellidos(),
-                    result.get(i).getControl(),
                     result.get(i).getCarrera(),
                     result.get(i).getEmail()
 
@@ -98,26 +108,32 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void guardarAlumno(){
-        alumnos.setControl(txCon.getText().toString());
-        alumnos.setNombre(txNom.getText().toString());
-        alumnos.setApellidos(txApe.getText().toString());
-        alumnos.setCarrera(txCar.getText().toString());
-        alumnos.setEmail(txMail.getText().toString());
+        String no_Contro=txCon.getText().toString();
+        RealmResults<Alumnos> Buscar=realm.where(Alumnos.class).equalTo("control",no_Contro).findAll();
 
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(alumnos);
-        realm.commitTransaction();
+        if(Buscar.size()==0) {
+            alumnos.setControl(txCon.getText().toString());
+            alumnos.setNombre(txNom.getText().toString());
+            alumnos.setApellidos(txApe.getText().toString());
+            alumnos.setCarrera(txCar.getText().toString());
+            alumnos.setEmail(txMail.getText().toString());
 
-        obtenerAlumno();
-        modelsAdapter.notifyDataSetChanged();
+            realm.beginTransaction();
+            realm.copyToRealm(alumnos);
+            realm.commitTransaction();
 
-        limpiarText(txCon);
-        limpiarText(txNom);
-        limpiarText(txApe);
-        limpiarText(txCar);
-        limpiarText(txMail);
+            obtenerAlumno();
+            modelsAdapter.notifyDataSetChanged();
 
+            limpiarText(txCon);
+            limpiarText(txNom);
+            limpiarText(txApe);
+            limpiarText(txCar);
+            limpiarText(txMail);
 
+        }else{
+            Toast.makeText(this, "El No.Control ya existe", Toast.LENGTH_SHORT).show();
+        }
 
 
 
@@ -178,5 +194,36 @@ public class MainActivity extends AppCompatActivity {
     }
     public void limpiarText(EditText t){
         t.setText("");
+    }
+
+    private void ActualizarAlumno(){
+        String no_Contro=txCon.getText().toString();
+        RealmResults<Alumnos> verificar=realm.where(Alumnos.class).equalTo("control",no_Contro).findAll();
+
+        if(verificar.size()==1){
+            alumnos.setControl(txCon.getText().toString());
+            alumnos.setNombre(txNom.getText().toString());
+            alumnos.setApellidos(txApe.getText().toString());
+            alumnos.setCarrera(txCar.getText().toString());
+            alumnos.setEmail(txMail.getText().toString());
+
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(alumnos);
+            realm.commitTransaction();
+
+            obtenerAlumno();
+            modelsAdapter.notifyDataSetChanged();
+
+            limpiarText(txCon);
+            limpiarText(txNom);
+            limpiarText(txApe);
+            limpiarText(txCar);
+            limpiarText(txMail);
+
+
+        }else{
+            Toast.makeText(this, "El No.Control no existe!!!", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
